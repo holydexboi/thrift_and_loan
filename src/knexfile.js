@@ -1,10 +1,10 @@
 const knex = require('knex')({
     client: 'mysql',
     connection: {
-      host : '127.0.0.1',
+      host : 'db4free.net',
       port : 3306,
-      user : 'root',
-      password : 'root',
+      user : 'dhulqev147',
+      password : 'Dhulqev147',
       database : 'thrift_project'
     },
     debug: true
