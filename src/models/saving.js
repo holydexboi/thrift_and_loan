@@ -53,6 +53,17 @@ async function getSavingsBalance(savingsId) {
     return output[0].balance
 }
 
+async function getMyContribution(member_id) {
+  
+    const output = await knex('savings')
+        .where({ member_id: member_id})
+        .select('id','balance', 'frequency', 'status')
+    
+    if (!output[0]) throw new Error('You have no active contribution')
+  
+    return output
+  }
+
 async function deposit(savingsId, amount) {
 
     const output = await knex('savings')
@@ -157,4 +168,4 @@ async function transfer(userId, receiverId, amount) {
     }
 }
 
-module.exports = { createTable, add, approve, getSavingsBalance,deposit, withdraw, transfer};
+module.exports = { createTable, add, approve, getSavingsBalance, getMyContribution, deposit, withdraw, transfer};

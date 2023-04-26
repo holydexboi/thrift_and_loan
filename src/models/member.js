@@ -20,7 +20,6 @@ async function createTable() {
               table.string("firstname");
               table.string("lastname");
               table.enu("gender", ["male", "female"]);
-              table.string("nationality");
               table.string("state");
               table.string("email");
               table.string("password");
@@ -74,4 +73,25 @@ async function signin(member) {
     return token
 }
 
-module.exports = { createTable, add, signin };
+async function changeProfile(member, memberId) {
+    console.log(member)
+  const output = await knex('members')
+      .where({ id: memberId })
+      .select('id','email','password', 'firstname', 'lastname')
+  
+  if (!output[0]) throw new Error('User does not exist')
+  const firstname = member.firstname === '' ? output.firstname : member.firstname 
+  const lastname = member.lastname === '' ? output.lastname : member.lastname
+  const password = member.password === '' ? output.password : member.password
+  const response = await knex('members')
+        .where('id', '=', memberId)
+        .update({
+            firstname: firstname,
+            lastname: lastname,
+            password: password
+        })
+  
+  return response
+}
+
+module.exports = { createTable, add, signin, changeProfile };

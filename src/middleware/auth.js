@@ -9,7 +9,7 @@ function auth(req, res, next) {
     try {
         
         const decoded = jwt.decode(token, config.get('jwtPrivateKey'))
-        req.user = decoded
+        req.member = decoded
         next()
     }
     catch (err) {

@@ -18,7 +18,7 @@ router.post('/deposit', auth, async (req, res) => {
     Saving.getSavingsBalance(req.body.savingsId).then(saving => {
         Transaction.create({id: transactionId, amount: req.body.amount, savings_id: req.body.savingsId, balance: saving+req.body.amount, transaction_code: req.body.transactionCode, payment_type: req.body.paymentType, status: 'pending'})
         .then(transaction => {
-            res.status(200).send('Your transaction is been initiated')
+            res.status(200).send('Your transaction has been initiated')
         })
         .catch(error => {
             res.status(500).send(error.message)
@@ -53,6 +53,20 @@ router.put('/update/:id', auth, async (req, res) => {
         res.status(500).send(error.message)
         
     }) 
+      
+    
+})
+
+router.get('/contransact/:id', auth, async (req, res) => {
+
+    Transaction.getContributionTransact(req.params.id)
+    .then(contr => {
+        res.status(200).send(contr)
+    })
+    .catch(error => {
+        res.status(500).send(error.message)
+        
+    })
       
     
 })

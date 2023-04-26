@@ -14,7 +14,7 @@ router.post('/create', auth, async (req, res) => {
 
     const accountId = v4();
 
-    Account.add({accountId, user: req.user._id, balance: req.body.amount})
+    Saving.add({accountId, user: req.user._id, balance: req.body.amount})
         .then(account => {
         res.status(200).send(account)
         })
@@ -41,6 +41,22 @@ router.post('/approve/:id', auth, async (req, res) => {
         })
     
 })
+
+router.get('/mycontribution', auth, async (req, res) => {
+
+    Saving.getMyContribution(req.member._id)
+    .then(contr => {
+        res.status(200).send(contr)
+    })
+    .catch(error => {
+        res.status(500).send(error.message)
+        
+    })
+      
+    
+})
+
+
 
 router.post('/deposit', auth, async (req, res) => {
 
