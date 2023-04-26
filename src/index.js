@@ -1,5 +1,5 @@
 const express = require('express')
-// const cors = require('cors')
+const cors = require('cors')
 const member = require('../src/routes/member')
 const saving = require('../src/routes/saving')
 const auth = require('../src/routes/auth')
@@ -11,7 +11,7 @@ const app = express()
 
 knexConfig
 app.use(express.json());
-// app.use(cors());
+app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 app.use('/api/member', member)
 app.use('/api/loan', loan)
