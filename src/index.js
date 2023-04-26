@@ -1,5 +1,6 @@
 const express = require('express')
 const cors = require('cors')
+const config = require('config')
 const member = require('../src/routes/member')
 const saving = require('../src/routes/saving')
 const auth = require('../src/routes/auth')
@@ -7,6 +8,11 @@ const loan = require('../src/routes/loan')
 const transaction = require('../src/routes/transaction')
 const knexConfig = require('../src/knexfile')
 
+
+if(!config.get('jwtPrivateKey')){
+    console.log('FATAL ERROR - JWTPrivateKey not define')
+    process.exit(1)
+}
 const app = express()
 
 knexConfig
