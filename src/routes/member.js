@@ -38,7 +38,9 @@ router.post('/register', async (req, res) => {
     Member.add({id: userId, email, password, firstname, lastname, gender, state, lga, dob}, savingsType)
         .then(user => {
             const token = jwt.sign({ _id: userId }, config.get('jwtPrivateKey'));
-            res.header('x-auth-token', token).send({token, userId, email, firstname, lastname, gender, state, dob, lga});
+            res.header('x-auth-token', token)
+            .header("access-control-expose-headers", "x-auth-token")
+            .send({token, userId, email, firstname, lastname, gender, state, dob, lga});
         })
         .catch(error => {
         res.status(500).send(error.message)
