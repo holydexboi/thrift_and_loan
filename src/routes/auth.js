@@ -9,10 +9,10 @@ router.post('/', async (req, res) => {
     if (!req.body.password) return res.status(400).send('Password not define')
 
     Member.signin({email: req.body.email, password: req.body.password})
-        .then(token => {
-            res.header('x-auth-token', token)
+        .then(data => {
+            res.header('x-auth-token', data.token)
             .header("access-control-expose-headers", "x-auth-token")
-            .send(token);
+            .send(data);
             
         })
         .catch(error => {

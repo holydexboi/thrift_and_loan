@@ -61,7 +61,7 @@ async function signin(member) {
     
     const output = await knex('members')
         .where({ email: member.email })
-        .select('id','email','password')
+        .select('id','email','password', 'firstname', 'lastname', 'gender', 'state', 'lga')
     
     if (!output[0]) throw new Error('Invalid email/password')
     
@@ -70,7 +70,7 @@ async function signin(member) {
     
     const token = jwt.sign({ _id: output[0].id }, configu.get('jwtPrivateKey'));
     
-    return token
+    return {token, output: output[0]}
 }
 
 async function changeProfile(member, memberId) {
