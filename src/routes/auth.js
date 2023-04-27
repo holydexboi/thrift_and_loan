@@ -10,7 +10,7 @@ router.post('/', async (req, res) => {
 
     Member.signin({email: req.body.email, password: req.body.password})
         .then(token => {
-            res.header('x-auth-token', token).send('Ok');
+            res.header('x-auth-token', token).send(token);
         })
         .catch(error => {
         res.status(500).send(error.message)
