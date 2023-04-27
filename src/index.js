@@ -9,6 +9,7 @@ const transaction = require('../src/routes/transaction')
 const knexConfig = require('../src/knexfile')
 
 
+console.log(process.env.NODE_ENV)
 if(!config.get('jwtPrivateKey')){
     console.log('FATAL ERROR - JWTPrivateKey not define')
     process.exit(1)
