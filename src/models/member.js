@@ -85,7 +85,7 @@ async function approve(status, userId) {
 
     const savingsId = v4();
 
-  await Saving.add({id : savingsId, member_id: member.id, balance: 0, status: "active", frequency: 'monthly'})
+  await Saving.add({id : savingsId, member_id: userId, balance: 0, status: "active", frequency: 'monthly'})
       .then(saving => {
       
       })
