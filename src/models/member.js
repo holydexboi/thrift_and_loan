@@ -62,7 +62,7 @@ async function signin(member) {
     const result = await bcrypt.compare(member.password, output[0].password)
     if (!result) throw new Error('Invalid email/password')
     
-    const token = jwt.sign({ _id: output[0].id }, configu.get('jwtPrivateKey'));
+    const token = jwt.sign({ _id: output[0].id, isAdmin: false }, configu.get('jwtPrivateKey'));
     
     return {token, output: output[0]}
 }

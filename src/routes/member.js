@@ -5,6 +5,7 @@ const {v4} = require('uuid')
 const jwt = require('jsonwebtoken');
 const config = require('config');
 const auth = require('../middleware/auth');
+const admin = require('../middleware/admin');
 
 const router = express.Router()
 
@@ -36,22 +37,22 @@ router.post('/register', async (req, res) => {
     const status = 'pending'
 
 
-    Member.add({id: userId, email, password, firstname, lastname, gender, state, lga, dob, has_loan, status})
+    Member.add({id: userId, email, password, firstname, lastname, gender, state, lga, dob, has_loan, status })
         .then(user => {
-            const token = jwt.sign({ _id: userId }, config.get('jwtPrivateKey'));
+            const token = jwt.sign({ _id: userId, isAdmin: false }, config.get('jwtPrivateKey'));
             res.header('x-auth-token', token)
             .header("access-control-expose-headers", "x-auth-token")
             .send({token, userId, email, firstname, lastname, gender, state, dob, lga, has_loan, status});
         })
         .catch(error => {
-        res.status(500).send(error.message)
+        res.status(400).send(error.message)
     })
 
     
     
 })
 
-router.put('/approve/:id', auth, async (req, res) => {
+router.put('/approve/:id', [auth, admin], async (req, res) => {
 
     if (!req.body.status) return res.status(400).send('Please enter status')
 
