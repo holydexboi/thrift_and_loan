@@ -4,7 +4,7 @@ const bcrypt = require('bcrypt')
 const {v4} = require('uuid')
 const jwt = require('jsonwebtoken');
 const config = require('config');
-const auth = require('../middleware/auth');
+const auth = require('../middleware/auth')
 const admin = require('../middleware/admin');
 
 const router = express.Router()
