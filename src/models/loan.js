@@ -52,7 +52,7 @@ async function getMyLoan(member_id) {
   
   const output = await knex('loans')
       .where({ member_id: member_id})
-      .select('amount', 'loan_balance', 'interest', 'start_date', 'end_date', 'repayment_amount', 'collateral', 'status')
+      .select('id', 'amount', 'loan_balance', 'interest', 'start_date', 'end_date', 'repayment_amount', 'collateral', 'status')
   
   if (!output[0]) throw new Error('You have not apply for a loan')
 
