@@ -87,10 +87,10 @@ async function approve(status, userId) {
 
   await Saving.add({id : savingsId, member_id: userId, balance: 0, status: "active", frequency: 'monthly'})
       .then(saving => {
-        console.log(saving)
+        return saving
       })
       .catch(error => {
-      console.log(error.message)
+      throw new Error(error)
       })
       
 
