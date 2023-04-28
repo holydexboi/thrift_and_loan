@@ -94,7 +94,7 @@ async function approve(status, userId) {
       })
       
 
-  return user
+  return "Success"
 }
 
 async function changeProfile(member, memberId) {
