@@ -22,6 +22,7 @@ async function createTable() {
               table.enu("gender", ["male", "female"]);
               table.string("state");
               table.string("email");
+              table.unique("email")
               table.string("password");
               table.boolean("isAdmin");
               table.string("lga");
@@ -40,11 +41,11 @@ async function createTable() {
 }
 
 async function add(member) {
-    const output = await knex('members')
-        .where({ email: member.email })
-        .select('email')
+    // const output = await knex('members')
+    //     .where({ email: member.email })
+    //     .select('email')
     
-    if (output[0]) throw new Error('Member with the given email already exist')
+    // if (output[0]) throw new Error('Member with the given email already exist')
     try{
     const id = await knex('members').insert(member);
     }catch(err){
