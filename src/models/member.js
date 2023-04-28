@@ -64,7 +64,7 @@ async function signin(member) {
     return {token, output: output[0]}
 }
 
-async function approve(userId, status) {
+async function approve(status, userId) {
 
   const output = await knex('members')
       .where({ id: userId })
@@ -80,7 +80,7 @@ async function approve(userId, status) {
 
     const savingsId = v4();
 
-  await Saving.add({id : savingsId, member_id: member.id, balance: 0, status: "active", frequency: savingsType})
+  await Saving.add({id : savingsId, member_id: member.id, balance: 0, status: "active", frequency: 'monthly'})
       .then(saving => {
       
       })
