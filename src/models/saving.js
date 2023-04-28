@@ -48,12 +48,14 @@ async function add(saving) {
                 
         })
 
+        return saving
+
     }
     catch (error) {
         console.log(error.message)
     }
 
-    return id
+    
 }
 
 async function getSavingsBalance(savingsId) {
