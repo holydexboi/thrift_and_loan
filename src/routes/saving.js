@@ -24,23 +24,23 @@ router.post('/create', auth, async (req, res) => {
     
 })
 
-router.post('/approve/:id', auth, async (req, res) => {
+    router.put('/approve/:id', auth, async (req, res) => {
 
-    const transactionId = v4();
-    if (!req.body.status) return res.status(400).send('Please enter amount to deposit')
-    
-    Saving.approve(req.params.id, req.body.status)
-        .then(account => {
-            console.log(account)
-            res.status(200).send('Account has been updated successfully')
-            Transaction.create({id: transactionId, savings_id: req.params.id, amount: 0.00, balance: 0.00, transaction_code: 0.00, payment_type: 'deposit', status: 'confirmed'})
-        })
-        .catch(error => {
-            res.status(500).send(error.message)
-            
-        })
-    
-})
+        const transactionId = v4();
+        if (!req.body.status) return res.status(400).send('Please enter amount to deposit')
+        
+        Saving.approve(req.params.id, req.body.status)
+            .then(account => {
+                console.log(account)
+                res.status(200).send('Account has been updated successfully')
+                Transaction.create({id: transactionId, savings_id: req.params.id, amount: 0.00, balance: 0.00, transaction_code: 0.00, payment_type: 'deposit', status: 'confirmed'})
+            })
+            .catch(error => {
+                res.status(500).send(error.message)
+                
+            })
+        
+    })
 
 router.get('/mycontribution', auth, async (req, res) => {
 

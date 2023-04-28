@@ -1,5 +1,6 @@
 const knex = require("../knexfile");
 const knexFn = require('knex')
+const { v4 } = require('uuid')
 
 
 async function createTable() {
@@ -16,7 +17,7 @@ async function createTable() {
               table.foreign('member_id').references('id').inTable('members')
               table.float("balance");
               table.enu("frequency", ["monthly", "bi-weekly", "annually", "quaterly"]);
-              table.enu("status", ["active", "closed", "pending"]);
+              table.enu("status", ["active", "closed"]);
               table.timestamp("created_at", { precision: 6 }).defaultTo(knex.fn.now(6))
             });
         }
@@ -36,7 +37,21 @@ async function add(saving) {
     
     if (output[0]) throw new Error('User already has an account')
 
-    const id = await knex('savings').insert(saving);
+    const transactionId = v4();
+    try {
+        
+        await knex.transaction(async trx => {
+    
+            await trx('savings').insert(saving);
+            
+            await trx('transactions').insert({id: transactionId, savings_id: saving.savingsId, amount: 0.00, balance: 0.00, transaction_code: 0.00, payment_type: 'deposit', status: 'confirmed'})
+                
+        })
+
+    }
+    catch (error) {
+        console.log(error.message)
+    }
 
     return id
 }

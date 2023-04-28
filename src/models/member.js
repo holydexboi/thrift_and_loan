@@ -24,6 +24,8 @@ async function createTable() {
               table.string("email");
               table.string("password");
               table.string("lga");
+              table.enu("status", ["approve", "closed", "pending"]);
+              table.enum("has_loan", [true, false]);
               table.date("dob", { precision: 6 });
               table.timestamp("created_at", { precision: 6 }).defaultTo(knex.fn.now(6));
             });
@@ -36,7 +38,7 @@ async function createTable() {
   }
 }
 
-async function add(member, savingsType) {
+async function add(member) {
     const output = await knex('members')
         .where({ email: member.email })
         .select('email')
@@ -44,17 +46,6 @@ async function add(member, savingsType) {
     if (output[0]) throw new Error('Member with the given email already exist')
 
     const id = await knex('members').insert(member);
-    
-    
-    const savingsId = v4();
-
-    await Saving.add({id : savingsId, member_id: member.id, balance: 0, status: "pending", frequency: savingsType})
-        .then(saving => {
-        console.log(saving)
-        })
-        .catch(error => {
-        console.log(error.message)
-        })
 }
 
 async function signin(member) {
@@ -71,6 +62,34 @@ async function signin(member) {
     const token = jwt.sign({ _id: output[0].id }, configu.get('jwtPrivateKey'));
     
     return {token, output: output[0]}
+}
+
+async function approve(userId, status) {
+
+  const output = await knex('members')
+      .where({ id: userId })
+      .select('id')
+  
+  if (!output[0]) throw new Error('No user with the given Id')
+
+  const user = await knex('members')
+      .where('id', '=', userId)
+      .update({
+          status: status
+      })
+
+    const savingsId = v4();
+
+  await Saving.add({id : savingsId, member_id: member.id, balance: 0, status: "active", frequency: savingsType})
+      .then(saving => {
+      
+      })
+      .catch(error => {
+      console.log(error.message)
+      })
+      
+
+  return user
 }
 
 async function changeProfile(member, memberId) {
@@ -94,4 +113,4 @@ async function changeProfile(member, memberId) {
   return response
 }
 
-module.exports = { createTable, add, signin, changeProfile };
+module.exports = { createTable, add, signin, changeProfile, approve };
