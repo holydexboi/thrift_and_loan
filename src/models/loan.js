@@ -39,7 +39,7 @@ async function applyLoan(loan) {
   console.log(loan)
   const memberCheck = await knex('members')
       .where({ id: loan.member_id, has_loan: true})
-      .select('id')
+      .select('  vcid')
   
   if (memberCheck[0]) throw new Error('You account has not been approved by the admin')
 
