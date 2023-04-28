@@ -22,7 +22,7 @@ async function createTable() {
               table.enu("gender", ["male", "female"]);
               table.string("state");
               table.string("email");
-              table.unique("email")
+              table.unique("email");
               table.string("password");
               table.boolean("isAdmin");
               table.string("lga");
