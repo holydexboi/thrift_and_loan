@@ -25,7 +25,7 @@ async function createTable() {
               table.string("password");
               table.string("lga");
               table.enu("status", ["approve", "closed", "pending"]);
-              table.enum("has_loan", [true, false]);
+              table.boolean("has_loan");
               table.date("dob", { precision: 6 });
               table.timestamp("created_at", { precision: 6 }).defaultTo(knex.fn.now(6));
             });
@@ -44,8 +44,11 @@ async function add(member) {
         .select('email')
     
     if (output[0]) throw new Error('Member with the given email already exist')
-
+    try{
     const id = await knex('members').insert(member);
+    }catch(err){
+      throw new Error(err)
+    }
 }
 
 async function signin(member) {
