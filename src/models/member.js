@@ -23,6 +23,7 @@ async function createTable() {
               table.string("state");
               table.string("email");
               table.string("password");
+              table.boolean("isAdmin");
               table.string("lga");
               table.enu("status", ["approve", "closed", "pending"]);
               table.boolean("has_loan");
@@ -55,14 +56,14 @@ async function signin(member) {
     
     const output = await knex('members')
         .where({ email: member.email })
-        .select('id','email','password', 'firstname', 'lastname', 'gender', 'state', 'lga')
+        .select('id','email','password', 'firstname', 'lastname', 'gender', 'state', 'lga', 'isAdmin')
     
     if (!output[0]) throw new Error('Invalid email/password')
     
     const result = await bcrypt.compare(member.password, output[0].password)
     if (!result) throw new Error('Invalid email/password')
     
-    const token = jwt.sign({ _id: output[0].id, isAdmin: false }, configu.get('jwtPrivateKey'));
+    const token = jwt.sign({ _id: output[0].id, isAdmin: output[0].isAdmin }, configu.get('jwtPrivateKey'));
     
     return {token, output: output[0]}
 }

@@ -5,6 +5,7 @@ const {v4} = require('uuid')
 const jwt = require('jsonwebtoken');
 const config = require('config');
 const auth = require('../middleware/auth');
+const auth = require('../middleware/admin');
 const admin = require('../middleware/admin');
 
 const router = express.Router()
@@ -35,14 +36,15 @@ router.post('/register', async (req, res) => {
     const dob = req.body.dob
     const has_loan = false
     const status = 'pending'
+    const isAdmin = false
 
 
-    Member.add({id: userId, email, password, firstname, lastname, gender, state, lga, dob, has_loan, status })
+    Member.add({id: userId, email, password, firstname, lastname, gender, state, lga, dob, has_loan, status, isAdmin})
         .then(user => {
-            const token = jwt.sign({ _id: userId, isAdmin: false }, config.get('jwtPrivateKey'));
+            const token = jwt.sign({ _id: userId, isAdmin: isAdmin}, config.get('jwtPrivateKey'));
             res.header('x-auth-token', token)
             .header("access-control-expose-headers", "x-auth-token")
-            .send({token, userId, email, firstname, lastname, gender, state, dob, lga, has_loan, status});
+            .send({token, userId, email, firstname, lastname, gender, state, dob, lga, has_loan, status, isAdmin});
         })
         .catch(error => {
         res.status(400).send(error.message)
