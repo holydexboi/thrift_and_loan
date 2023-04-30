@@ -36,7 +36,7 @@ router.put('/approve/:id', [auth, admin], async (req, res) => {
 
     if(!req.body.status) return res.status(400).send('Please enter the status')
 
-    Loan.approveLoan(req.param.id,req.body.status)
+    Loan.approveLoan(req.params.id,req.body.status)
     .then(loan => {
         res.status(200).send('You have successfully update this loan')
     })
