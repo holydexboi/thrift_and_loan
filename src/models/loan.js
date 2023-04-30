@@ -38,7 +38,7 @@ async function createTable() {
 async function applyLoan(loan) {
   console.log(loan)
   const memberCheck = await knex('members')
-      .where({ id: loan.member_id, has_loan: true})
+      .where({ id: loan.member_id, status: 'pending'})
       .select('id')
   
   if (memberCheck[0]) throw new Error('You account has not been approved by the admin')
