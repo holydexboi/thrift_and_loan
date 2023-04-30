@@ -88,27 +88,27 @@ async function deposit(savingsId, amount) {
 
 async function withdraw(memberId, savingId, amount) {
 
-    const output = await db('savings')
-        .where({ user: userId })
-        .select('accountId')
+    const output = await knex('savings')
+        .where({ id: savingId, member_id: memberId, balance: amount })
+        .select('id')
     
-    if (!output[0]) throw new Error('This user does not have an account and cannot withdraw')
+    if (!output[0]) throw new Error('No contribution with the given ID')
 
-    const acctBalance = await db('account')
+    const acctBalance = await knex('savings')
         .where({
-            user: userId
+            id: savingId
         }).select('balance')
     
     
     if(acctBalance[0].balance < amount) throw new Error('Insufficient balance')
     
-    const account = await db('account')
-        .where('user', '=', userId)
+    const saving = await knex('savings')
+        .where('id', '=', savingId)
         .decrement({
             balance: amount
         })
     
-    return account
+    return saving
 }
 
 async function transfer(userId, receiverId, amount) {

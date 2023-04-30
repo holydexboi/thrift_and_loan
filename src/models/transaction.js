@@ -17,7 +17,7 @@ async function createTable() {
               table.float("amount");
               table.float("balance");
               table.integer("transaction_code");
-              table.enu("payment_type", ["deposit", "transfer", "cheque"]);
+              table.enu("payment_type", ["deposit", "transfer", "cheque", "withdraw"]);
               table.enu("status", ["confirmed", "rejected", "pending"]);
               table.datetime("date", { precision: 6 }).defaultTo(knex.fn.now(6))
             });
