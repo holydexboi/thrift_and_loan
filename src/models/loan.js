@@ -39,7 +39,7 @@ async function applyLoan(loan) {
   console.log(loan)
   const memberCheck = await knex('members')
       .where({ id: loan.member_id, has_loan: true})
-      .select('  vcid')
+      .select('id')
   
   if (memberCheck[0]) throw new Error('You account has not been approved by the admin')
 
@@ -50,6 +50,14 @@ async function applyLoan(loan) {
   if (output[0]) throw new Error('You have a pending loan and cannot apply for new loan')
 
   const id = await knex('loans').insert(loan);
+
+  const user = await knex('members')
+      .where('id', '=', loan.member_id)
+      .update({
+          has_loan: true
+      })
+
+  console.log(user)
 
   return id
 }
@@ -76,4 +84,4 @@ async function getMyLoan(member_id) {
   return output
 }
 
-module.exports = { createTable, applyLoan, getMyLoan };
+module.exports = { createTable, applyLoan, getMyLoan, approveLoan };
