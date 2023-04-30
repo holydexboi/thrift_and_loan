@@ -29,6 +29,18 @@ async function createTable() {
   }
 }
 
+async function getSavingsBalance(savingsId) {
+    
+    const output = await knex('savings')
+        .where({ id: savingsId })
+        .select('balance')
+    
+    if (!output[0]) throw new Error('Account does not exist')
+
+    
+    return output[0].balance
+}
+
 async function add(saving) {
     console.log(saving)
     const output = await knex('savings')
@@ -156,4 +168,4 @@ async function transfer(userId, receiverId, amount) {
     }
 }
 
-module.exports = { createTable, add, approve, getSavingsBalance, getMyContribution, deposit, withdraw, transfer};
+module.exports = { createTable, add, getSavingsBalance, getMyContribution, deposit, withdraw, transfer};
