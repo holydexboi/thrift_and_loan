@@ -58,18 +58,6 @@ async function add(saving) {
     
 }
 
-async function getSavingsBalance(savingsId) {
-    
-    const output = await knex('savings')
-        .where({ id: savingsId })
-        .select('balance')
-    
-    if (!output[0]) throw new Error('Account does not exist')
-
-    
-    return output[0].balance
-}
-
 async function getMyContribution(member_id) {
   
     const output = await knex('savings')
@@ -98,26 +86,9 @@ async function deposit(savingsId, amount) {
     return saving
 }
 
-async function approve(savingsId, status) {
+async function withdraw(memberId, savingId, amount) {
 
-    const output = await knex('savings')
-        .where({ id: savingsId })
-        .select('id')
-    
-    if (!output[0]) throw new Error('This user does not have an account')
-
-    const saving = await knex('savings')
-        .where('id', '=', savingsId)
-        .update({
-            status: status
-        })
-    
-    return saving
-}
-
-async function withdraw(userId, amount) {
-
-    const output = await db('account')
+    const output = await db('savings')
         .where({ user: userId })
         .select('accountId')
     
