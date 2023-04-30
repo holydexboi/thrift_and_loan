@@ -56,7 +56,7 @@ async function add(saving) {
     
             await trx('savings').insert(saving);
             
-            await trx('transactions').insert({id: transactionId, savings_id: saving.savingsId, amount: 0.00, balance: 0.00, transaction_code: 0.00, payment_type: 'deposit', status: 'confirmed'})
+            await trx('transactions').insert({id: transactionId, savings_id: saving.id, amount: 0.00, balance: 0.00, transaction_code: 0.00, payment_type: 'deposit', status: 'confirmed'})
                 
         })
 
