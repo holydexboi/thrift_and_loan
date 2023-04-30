@@ -3,6 +3,7 @@ const moment = require('moment')
 const Loan = require('../models/loan')
 const { v4 } = require('uuid')
 const auth = require('../middleware/auth');
+const admin = require('../middleware/admin');
 
 const router = express.Router()
 
@@ -29,6 +30,19 @@ router.post('/apply', auth, async (req, res) => {
     })
       
     
+})
+
+router.put('/approve/:id', [auth, admin], async (req, res) => {
+
+    if(!req.body.status) return res.status(400).send('Please enter the status')
+
+    Loan.approveLoan(req.param.id,req.body.status)
+    .then(loan => {
+        res.status(200).send('You have successfully update this loan')
+    })
+    .catch(error => {
+        res.status(500).send(error.message)
+    })
 })
 
 router.get('/myloan', auth, async (req, res) => {
