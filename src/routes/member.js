@@ -69,6 +69,17 @@ router.put('/approve/:id', [auth, admin], async (req, res) => {
     
 })
 
+router.get('/userprofile', auth, async (req, res) => {
+
+    Member.getUser(req.member._id)
+    .then(user => {
+        res.send(user)
+    })
+    .catch(error => {
+        res.status(400).send(error.message)
+    })
+})
+
 router.put('/update', auth, async (req, res) => {
 
     const salt = await bcrypt.genSalt(10);

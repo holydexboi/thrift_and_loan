@@ -69,6 +69,18 @@ async function signin(member) {
     return {token, ...output[0]}
 }
 
+async function getUser(memberId) {
+    
+  const output = await knex('members')
+      .where({ id: memberId })
+      .select('id','email', 'firstname', 'lastname', 'gender', 'state', 'lga', 'isAdmin', 'has_loan')
+  
+  if (!output[0]) throw new Error('Invalid token')
+  
+  
+  return output[0]
+}
+
 async function approve(status, userId) {
 
   const output = await knex('members')
@@ -118,4 +130,4 @@ async function changeProfile(member, memberId) {
   return response
 }
 
-module.exports = { createTable, add, signin, changeProfile, approve };
+module.exports = { createTable, add, signin, changeProfile, approve, getUser };
