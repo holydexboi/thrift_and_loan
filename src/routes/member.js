@@ -78,7 +78,7 @@ router.put('/update', auth, async (req, res) => {
 
 
 
-    Member.changeProfile({id: userId, password, firstname, lastname}, req.member._id)
+    Member.changeProfile({ password, firstname, lastname}, req.member._id)
         .then(user => {
             const token = jwt.sign({ _id: req.member._id }, config.get('jwtPrivateKey'));
             res.header('x-auth-token', token).send({userId: req.member._Id, firstname, lastname});
