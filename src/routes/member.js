@@ -19,8 +19,9 @@ router.post('/register', async (req, res) => {
     if (!req.body.state) return res.status(400).send('State is not define')
     if (!req.body.lga) return res.status(400).send('Local Goverment Area is not define')
     if (!req.body.dob) return res.status(400).send('Date of Birth is not define')
-    if (!req.body.email) return res.status(400).send('email not define')
-    if (!req.body.password) return res.status(400).send('password not define')
+    if (!req.body.email) return res.status(400).send('Email not define')
+    if (!req.body.password) return res.status(400).send('Password not define')
+    if(!req.body.savingsType) return res.status(400).send('Savings type not define')
     
     
     const userId = v4()
@@ -36,14 +37,15 @@ router.post('/register', async (req, res) => {
     const has_loan = false
     const status = 'pending'
     const isAdmin = false
+    const contribution_type = req.body.savingsType
 
 
-    Member.add({id: userId, email, password, firstname, lastname, gender, state, lga, dob, has_loan, status, isAdmin})
+    Member.add({id: userId, email, password, firstname, lastname, gender, state, lga, dob, has_loan, status, isAdmin, contribution_type})
         .then(user => {
             const token = jwt.sign({ _id: userId, isAdmin: isAdmin}, config.get('jwtPrivateKey'));
             res.header('x-auth-token', token)
             .header("access-control-expose-headers", "x-auth-token")
-            .send({token, userId, email, firstname, lastname, gender, state, dob, lga, has_loan, status, isAdmin});
+            .send({token, userId, email, firstname, lastname, gender, state, dob, lga, has_loan, status, isAdmin, contribution_type});
         })
         .catch(error => {
         res.status(400).send(error.message)

@@ -7,6 +7,7 @@ const auth = require('../middleware/auth');
 const router = express.Router()
 
 Saving.createTable()
+Saving.add()
 
 
 // router.put('/approve/:id', auth, async (req, res) => {
@@ -26,6 +27,17 @@ Saving.createTable()
 //         })
     
 // })
+
+router.get('/contribution/type', async (req, res) => {
+console.log('ki')
+    Saving.getContributionType()
+    .then(contri => {
+        res.send(contri)
+    })
+    .catch(err => {
+        res.status(500).send(err.message)
+    })
+})
 
 router.get('/mycontribution', auth, async (req, res) => {
 

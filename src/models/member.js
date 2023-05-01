@@ -26,6 +26,7 @@ async function createTable() {
               table.string("password");
               table.boolean("isAdmin");
               table.string("lga");
+              table.enum('contribution_type', ['monthly', 'weekly', 'daily', 'yearly'])
               table.enu("status", ["approve", "closed", "pending"]);
               table.boolean("has_loan");
               table.date("dob", { precision: 6 });
@@ -93,16 +94,6 @@ async function approve(status, userId) {
       .where('id', '=', userId)
       .update({
           status: status
-      })
-
-    const savingsId = v4();
-
-  await Saving.add({id : savingsId, member_id: userId, balance: 0, status: "active", frequency: 'monthly'})
-      .then(saving => {
-        return saving
-      })
-      .catch(error => {
-      throw new Error(error)
       })
       
 

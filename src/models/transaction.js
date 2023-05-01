@@ -14,6 +14,8 @@ async function createTable() {
               table.string("id").primary();
               table.string('savings_id')
               table.foreign('savings_id').references('id').inTable('savings')
+              table.string('member_id')
+              table.foreign('member_id').references('id').inTable('members')
               table.float("amount");
               table.float("balance");
               table.integer("transaction_code");
@@ -37,10 +39,10 @@ async function create(transaction) {
     return id
 }
 
-async function getContributionTransact(savings_id) {
+async function getContributionTransact(member_id) {
   
   const output = await knex('transactions')
-      .where({ savings_id: savings_id})
+      .where({ member_id: member_id})
       .select('amount', 'balance', 'transaction_code', 'payment_type', 'status', 'date')
   
   if (!output[0]) throw new Error('You have no transaction attach to this contribution')
