@@ -41,7 +41,7 @@ router.post('/withdraw', auth, async (req, res) => {
     if (!req.body.amount) return res.status(400).send('Please enter amount')
     if (!req.body.beneficiaryAccount) return res.status(400).send('Please enter transaction code or teller number')
     Saving.getSavingsBalance(1).then(saving => {
-        Transaction.create({id: transactionId, amount: parseFloat(req.body.amount), savings_id: 1, balance: saving- parseFloat(req.body.amount), transaction_code: req.body.beneficiaryAccount, payment_type: "withdraw", status: 'pending'})
+        Transaction.create({id: transactionId, amount: parseFloat(req.body.amount), savings_id: 1, balance: saving- parseFloat(req.body.amount), transaction_code: req.body.beneficiaryAccount, payment_type: "withdraw", status: 'pending', member_id: req.member._id})
         .then(transaction => {
             res.status(200).send('Your withdraw has been initiated')
         })
@@ -90,7 +90,7 @@ router.put('/update/withdraw/:id', [auth, admin], async (req, res) => {
    
         Transaction.approve(req.params.id , req.body.status)
         .then(transaction => {
-            Saving.withdraw(req.member._id, transaction.savings_id, transaction.amount)
+            Saving.withdraw(transaction.savings_id, transaction.amount)
             res.status(200).send('Your transaction has been updated')
         })
         .catch(error => {
