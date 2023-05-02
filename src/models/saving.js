@@ -91,7 +91,7 @@ async function deposit(savingsId, memberId, amount) {
     balance: amount,
   });
 
-  const member = await knex("members").where({id: memberId}).increment({
+  const member = await knex("members").where("id", "=", memberId).increment({
     contri_amount: amount
   })
 

@@ -55,6 +55,16 @@ router.post('/register', async (req, res) => {
     
 })
 
+router.get('alluser', (req, res) => {
+
+    Member.getAllUser()
+    .then(users => {
+        res.send(users)
+    }).catch(error => {
+        res.status(400).send(error.message)
+    })
+})
+
 router.put('/approve/:id', [auth, admin], async (req, res) => {
 
     if (!req.body.status) return res.status(400).send('Please enter status')

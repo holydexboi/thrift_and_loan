@@ -50,11 +50,21 @@ async function getContributionTransact(member_id) {
   return output
 }
 
+async function getAllTransaction() {
+  
+  const output = await knex('transactions')
+      .select('amount', 'balance', 'transaction_code', 'payment_type', 'status', 'date')
+  
+  if (!output[0]) throw new Error('No transaction for this contribution')
+
+  return output
+}
+
 async function approve(transactionId, status) {
 
     const output = await knex('transactions')
         .where({ id: transactionId })
-        .select('id', 'savings_id', 'amount', 'status')
+        .select('id', 'savings_id', 'amount', 'member_id','status')
     
     if (!output[0]) throw new Error('Transaction does not exist in the system')
 
@@ -69,4 +79,4 @@ async function approve(transactionId, status) {
     return output[0]
 }
 
-module.exports = { createTable, create, approve, getContributionTransact};
+module.exports = { createTable, create, approve, getContributionTransact, getAllTransaction};

@@ -83,6 +83,16 @@ async function getUser(memberId) {
   return output[0]
 }
 
+async function getAllUser() {
+  
+  const output = await knex('members')
+      .select('id','email', 'firstname', 'lastname', 'gender', 'state', 'lga', 'isAdmin', 'has_loan', 'contri_amount')
+  
+  if (!output[0]) throw new Error('No User for this contribution')
+
+  return output
+}
+
 async function approve(status, userId) {
 
   const output = await knex('members')
@@ -122,4 +132,4 @@ async function changeProfile(member, memberId) {
   return response
 }
 
-module.exports = { createTable, add, signin, changeProfile, approve, getUser };
+module.exports = { createTable, add, signin, changeProfile, approve, getUser, getAllUser};

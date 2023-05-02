@@ -106,6 +106,17 @@ router.put('/update/withdraw/:id', [auth, admin], async (req, res) => {
     
 })
 
+router.get('alltransaction', (req, res) => {
+
+    Transaction.getAllTransaction()
+    .then(trans => {
+        res.send(trans)
+    })
+    .catch(error => {
+        res.status(400).send(error.message)
+    })
+})
+
 router.get('/mycontribution', auth, async (req, res) => {
 
     Transaction.getContributionTransact(req.member._id)
