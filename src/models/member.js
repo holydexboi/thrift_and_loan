@@ -25,6 +25,7 @@ async function createTable() {
               table.unique("email");
               table.string("password");
               table.boolean("isAdmin");
+              table.float("contri_amount");
               table.string("lga");
               table.enum('contribution_type', ['monthly', 'weekly', 'daily', 'yearly'])
               table.enu("status", ["approve", "closed", "pending"]);
@@ -74,7 +75,7 @@ async function getUser(memberId) {
     
   const output = await knex('members')
       .where({ id: memberId })
-      .select('id','email', 'firstname', 'lastname', 'gender', 'state', 'lga', 'isAdmin', 'has_loan')
+      .select('id','email', 'firstname', 'lastname', 'gender', 'state', 'lga', 'isAdmin', 'has_loan', 'contri_amount')
   
   if (!output[0]) throw new Error('Invalid token')
   

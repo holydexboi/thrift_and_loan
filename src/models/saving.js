@@ -82,7 +82,7 @@ async function getMyContribution(member_id) {
   return output;
 }
 
-async function deposit(savingsId, amount) {
+async function deposit(savingsId, memberId, amount) {
   const output = await knex("savings").where({ id: savingsId }).select("id");
 
   if (!output[0]) throw new Error("The savings account does not exist");
@@ -91,10 +91,14 @@ async function deposit(savingsId, amount) {
     balance: amount,
   });
 
+  const member = await knex("members").where({id: memberId}).increment({
+    contri_amount: amount
+  })
+
   return saving;
 }
 
-async function withdraw(savingId, amount) {
+async function withdraw(savingId, memberId, amount) {
   const output = await knex("savings")
     .where({ id: savingId})
     .select("id");
@@ -112,6 +116,10 @@ async function withdraw(savingId, amount) {
   const saving = await knex("savings").where("id", "=", savingId).decrement({
     balance: amount,
   });
+
+  const member = await knex("members").where({id: memberId}).decrement({
+    contri_amount: amount
+  })
 
   return saving;
 }

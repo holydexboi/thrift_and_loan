@@ -66,7 +66,7 @@ router.put('/update/deposit/:id', [auth, admin], async (req, res) => {
    
         Transaction.approve(req.params.id , req.body.status)
         .then(transaction => {
-            Saving.deposit(transaction.savings_id, transaction.amount)
+            Saving.deposit(transaction.savings_id, transaction.member_id, transaction.amount)
             res.status(200).send('Your transaction has been updated')
         })
         .catch(error => {
@@ -90,7 +90,7 @@ router.put('/update/withdraw/:id', [auth, admin], async (req, res) => {
    
         Transaction.approve(req.params.id , req.body.status)
         .then(transaction => {
-            Saving.withdraw(transaction.savings_id, transaction.amount)
+            Saving.withdraw(transaction.savings_id, transaction.member_id, transaction.amount)
             res.status(200).send('Your transaction has been updated')
         })
         .catch(error => {
