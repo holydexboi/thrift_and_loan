@@ -106,7 +106,7 @@ router.put('/update/withdraw/:id', [auth, admin], async (req, res) => {
     
 })
 
-router.get('alltransaction', (req, res) => {
+router.get('/alltransaction', (req, res) => {
 
     Transaction.getAllTransaction()
     .then(trans => {
