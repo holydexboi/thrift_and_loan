@@ -55,7 +55,7 @@ router.post('/register', async (req, res) => {
     
 })
 
-router.get('alluser', (req, res) => {
+router.get('/alluser', (req, res) => {
 
     Member.getAllUser()
     .then(users => {
