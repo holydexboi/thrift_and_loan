@@ -53,7 +53,14 @@ async function getContributionTransact(member_id) {
 async function getAllTransaction() {
   
   const output = await knex('transactions')
-      .select('amount', 'balance', 'transaction_code', 'payment_type', 'status', 'date')
+      .innerJoin(
+        'members', 
+        'transactions.member_id', 
+        '=', 
+        'members.id'
+      )
+      .select('transactions.amount', 'transactions.balance', 'transactions.transaction_code', 'transactions.payment_type', 'transactions.status', 'transactions.date', 'members.firstname', 'members.lastname')
+      
   
   if (!output[0]) throw new Error('No transaction for this contribution')
 
