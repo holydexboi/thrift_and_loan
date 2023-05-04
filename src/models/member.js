@@ -107,6 +107,18 @@ async function approve(status, userId) {
           status: status
       })
       
+      const dividendId = v4()
+      try {
+        await knex.transaction(async (trx) => {
+          await trx("members").where("id", "=", userId).update({
+            status: status,
+          });
+    
+          await trx("dividends").insert({id: dividendId, member_id: userId, amount: 0.00})
+        });
+      } catch (error) {
+        console.log(error.message);
+      }
 
   return "Success"
 }

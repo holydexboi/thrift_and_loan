@@ -45,6 +45,19 @@ router.put('/approve/:id', [auth, admin], async (req, res) => {
     })
 })
 
+router.put('/repay/:id', auth, async (req, res) => {
+
+    if(!req.body.amount) return res.status(400).send('Please enter the amount')
+
+    Loan.repayLoan(req.params.id, parseFloat(req.body.amount))
+    .then(loan => {
+        res.status(200).send('Your loan payment has been updated')
+    })
+    .catch(error => {
+        res.status(500).send(error.message)
+    })
+})
+
 router.get('/myloan', auth, async (req, res) => {
 
     Loan.getMyLoan(req.member._id)
