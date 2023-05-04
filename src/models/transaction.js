@@ -59,7 +59,7 @@ async function getAllTransaction() {
         '=', 
         'members.id'
       )
-      .select('transactions.amount', 'transactions.balance', 'transactions.transaction_code', 'transactions.payment_type', 'transactions.status', 'transactions.date', 'members.firstname', 'members.lastname')
+      .select('transactions.id', 'transactions.amount', 'transactions.balance', 'transactions.transaction_code', 'transactions.payment_type', 'transactions.status', 'transactions.date', 'members.firstname', 'members.lastname')
       
   
   if (!output[0]) throw new Error('No transaction for this contribution')

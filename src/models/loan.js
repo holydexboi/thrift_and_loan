@@ -76,9 +76,37 @@ async function approveLoan(loanId, status) {
   return loan;
 }
 
+async function getAllLoan() {
+  const output = await knex("loans")
+    .innerJoin(
+      'members', 
+      'loans.member_id', 
+      '=', 
+      'members.id'
+    )
+    .select(
+      "loans.id",
+      "loans.amount",
+      "loans.loan_balance",
+      "loans.interest",
+      "loans.start_date",
+      "loans.end_date",
+      "loans.repayment_amount",
+      "loans.repayment_balance",
+      "loans.collateral",
+      "loans.status",
+      "members.firstname",
+      "members.lastname"
+    );
+
+  if (!output[0]) throw new Error("You have not apply for a loan");
+
+  return output;
+}
+
 async function getMyLoan(member_id) {
   const output = await knex("loans")
-    .where({ member_id: member_id })
+  .where({ member_id: member_id })
     .select(
       "id",
       "amount",
@@ -164,4 +192,4 @@ async function repayLoan(loanId, amount) {
   return output;
 }
 
-module.exports = { createTable, applyLoan, getMyLoan, approveLoan, repayLoan};
+module.exports = { createTable, applyLoan, getMyLoan, approveLoan, repayLoan, getAllLoan};

@@ -72,4 +72,18 @@ router.get('/myloan', auth, async (req, res) => {
     
 })
 
+router.get('/allloan', auth, async (req, res) => {
+
+    Loan.getAllLoan()
+    .then(loan => {
+        res.status(200).send(loan)
+    })
+    .catch(error => {
+        res.status(500).send(error.message)
+    
+    })
+      
+    
+})
+
 module.exports = router

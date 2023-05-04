@@ -32,8 +32,7 @@ async function createTable() {
               table.boolean("has_loan");
               table.date("dob", { precision: 6 });
               table.timestamp("created_at", { precision: 6 }).defaultTo(knex.fn.now(6));
-            });
-        }
+            });        }
         create()
       }
     });
@@ -86,7 +85,7 @@ async function getUser(memberId) {
 async function getAllUser() {
   
   const output = await knex('members')
-      .select('id','email', 'firstname', 'lastname', 'gender', 'state', 'lga', 'isAdmin', 'has_loan', 'contri_amount')
+      .select('id','email', 'firstname', 'lastname', 'gender', 'state', 'lga', 'isAdmin', 'has_loan', 'contri_amount', 'status')
   
   if (!output[0]) throw new Error('No User for this contribution')
 
