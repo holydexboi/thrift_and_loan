@@ -142,4 +142,18 @@ router.get('/mycontribution', auth, async (req, res) => {
     
 })
 
+router.get('/mywithdraw', auth, async (req, res) => {
+
+    Transaction.getContributionWithdraw(req.member._id)
+    .then(contr => {
+        res.status(200).send(contr)
+    })
+    .catch(error => {
+        res.status(400).send(error.message)
+        
+    })
+      
+    
+})
+
 module.exports = router

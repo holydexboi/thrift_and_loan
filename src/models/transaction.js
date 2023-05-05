@@ -39,11 +39,22 @@ async function create(transaction) {
     return id
 }
 
+async function getContributionWithdraw(member_id) {
+  
+  const output = await knex('transactions')
+      .where({ member_id: member_id, payment_type: 'withdraw'})
+      .select('id','amount', 'balance', 'transaction_code', 'payment_type', 'status', 'date')
+  
+  if (!output[0]) throw new Error('You have no transaction attach to this contribution')
+
+  return output
+}
+
 async function getContributionTransact(member_id) {
   
   const output = await knex('transactions')
       .where({ member_id: member_id})
-      .select('amount', 'balance', 'transaction_code', 'payment_type', 'status', 'date')
+      .select('id', 'amount', 'balance', 'transaction_code', 'payment_type', 'status', 'date')
   
   if (!output[0]) throw new Error('You have no transaction attach to this contribution')
 
@@ -105,4 +116,4 @@ async function approve(transactionId, status) {
     return output[0]
 }
 
-module.exports = { createTable, create, approve, getContributionTransact, getAllTransaction, getAllWithdraw};
+module.exports = { createTable, create, approve, getContributionTransact, getAllTransaction, getAllWithdraw, getContributionWithdraw};
