@@ -117,6 +117,17 @@ router.get('/alltransaction', (req, res) => {
     })
 })
 
+router.get('/allwithdraw', (req, res) => {
+
+    Transaction.getAllWithdraw()
+    .then(trans => {
+        res.send(trans)
+    })
+    .catch(error => {
+        res.status(400).send(error.message)
+    })
+})
+
 router.get('/mycontribution', auth, async (req, res) => {
 
     Transaction.getContributionTransact(req.member._id)

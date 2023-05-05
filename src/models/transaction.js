@@ -53,6 +53,25 @@ async function getContributionTransact(member_id) {
 async function getAllTransaction() {
   
   const output = await knex('transactions')
+      .where('payment_type', '!=', 'withdraw')
+      .innerJoin(
+        'members', 
+        'transactions.member_id', 
+        '=', 
+        'members.id'
+      )
+      .select('transactions.id', 'transactions.amount', 'transactions.balance', 'transactions.transaction_code', 'transactions.payment_type', 'transactions.status', 'transactions.date', 'members.firstname', 'members.lastname')
+      
+  
+  if (!output[0]) throw new Error('No transaction for this contribution')
+
+  return output
+}
+
+async function getAllWithdraw() {
+  
+  const output = await knex('transactions')
+      .where('payment_type', '=', 'withdraw')
       .innerJoin(
         'members', 
         'transactions.member_id', 
@@ -86,4 +105,4 @@ async function approve(transactionId, status) {
     return output[0]
 }
 
-module.exports = { createTable, create, approve, getContributionTransact, getAllTransaction};
+module.exports = { createTable, create, approve, getContributionTransact, getAllTransaction, getAllWithdraw};
