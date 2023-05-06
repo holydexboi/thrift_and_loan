@@ -28,9 +28,9 @@ Saving.add()
     
 // })
 
-router.get('/contribution/type', async (req, res) => {
-console.log('ki')
-    Saving.getContributionType()
+router.get('/contribution/balance', async (req, res) => {
+
+    Saving.getContribution()
     .then(contri => {
         res.send(contri)
     })

@@ -16,7 +16,7 @@ router.post('/deposit', auth, async (req, res) => {
     if (!req.body.transactionCode) return res.status(400).send('Please enter transaction code or tell number')
     if (!req.body.paymentType) return res.status(400).send('Please enter payment type')
     Saving.getSavingsBalance(1).then(saving => {
-        Transaction.create({id: transactionId, amount: parseFloat(req.body.amount), savings_id: 1, balance: saving+ parseFloat(req.body.amount), transaction_code: req.body.transactionCode, payment_type: req.body.paymentType, status: 'pending', member_id: req.member._id})
+        Transaction.create({id: transactionId, amount: parseFloat(req.body.amount), savings_id: 1, balance: saving+ parseFloat(req.body.amount), transaction_code: parseInt(req.body.transactionCode), payment_type: req.body.paymentType, status: 'pending', member_id: req.member._id})
         .then(transaction => {
             res.status(200).send('Your transaction has been initiated')
         })

@@ -72,12 +72,12 @@ async function getContributionType() {
   return output;
 }
 
-async function getMyContribution(member_id) {
+async function getContribution() {
   const output = await knex("savings")
-    .where({ member_id: member_id })
-    .select("id", "balance", "frequency", "status");
+    .where({ id: 1 })
+    .select("id", "balance", "status");
 
-  if (!output[0]) throw new Error("You have no active contribution");
+  if (!output[0]) throw new Error("No contribution");
 
   return output;
 }
@@ -166,7 +166,7 @@ module.exports = {
   createTable,
   add,
   getSavingsBalance,
-  getMyContribution,
+  getContribution,
   deposit,
   withdraw,
   transfer,
