@@ -139,7 +139,7 @@ async function approve(status, userId) {
   if (!output[0]) throw new Error("No user with the given Id");
 
   const dividend = await knex("dividends")
-    .where("member_id", "=", member_id)
+    .where("member_id", "=", userId)
     .select("id");
 
   if (dividend[0]) {
