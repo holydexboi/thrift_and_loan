@@ -127,7 +127,7 @@ async function changeProfile(member, memberId) {
     console.log(member)
   const output = await knex('members')
       .where({ id: memberId })
-      .select('id','email','password', 'firstname', 'lastname')
+      .select('id','email','password', 'firstname', 'lastname', 'gender', 'state', 'lga', 'isAdmin', 'has_loan')
   
   if (!output[0]) throw new Error('User does not exist')
   const firstname = member.firstname === '' ? output.firstname : member.firstname 
@@ -141,7 +141,7 @@ async function changeProfile(member, memberId) {
             password: password
         })
 
-  const userObj = {firstname, lastname, password}
+  const userObj = { userId: output.id, firstname, lastname, password, email: output.email, gender: output.gender, state: output.state, lga: output.lga, isAdmin: output.isAdmin, has_loan: output.has_loan}
 
   return userObj
 }

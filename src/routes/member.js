@@ -104,7 +104,7 @@ router.put('/update', auth, async (req, res) => {
     Member.changeProfile({ password, firstname, lastname}, req.member._id)
         .then(user => {
             const token = jwt.sign({ _id: req.member._id }, config.get('jwtPrivateKey'));
-            res.header('x-auth-token', token).send({token, userId: req.member._Id, firstname, lastname});
+            res.header('x-auth-token', token).send({token, ...user});
         })
         .catch(error => {
         res.status(500).send(error.message)
