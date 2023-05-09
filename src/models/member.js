@@ -140,8 +140,10 @@ async function changeProfile(member, memberId) {
             lastname: lastname,
             password: password
         })
-  
-  return response
+
+  const userObj = {firstname, lastname, password}
+
+  return userObj
 }
 
 module.exports = { createTable, add, signin, changeProfile, approve, getUser, getAllUser};
