@@ -28,7 +28,13 @@ async function createTable() {
 async function getAllDividend() {
   
   const output = await knex('dividends')
-      .select('id','member_id', 'amount')
+    .innerJoin(
+      'members', 
+      'dividends.member_id', 
+      '=', 
+      'members.id'
+    )
+    .select('dividends.id','members.firstname', 'members.lastname',  'dividends.amount')
   
   if (!output[0]) throw new Error('No Dividend in the database')
 
