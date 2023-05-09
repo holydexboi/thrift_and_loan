@@ -100,6 +100,10 @@ async function approve(status, userId) {
       .select('id')
   
   if (!output[0]) throw new Error('No user with the given Id')
+
+  const dividend = await trx('dividends').where("member_id", "=", member_id).select('id')
+          
+  if(dividend[0]) throw new Error('Dividend account already exist for this member')
       
       const dividendId = v4()
       try {
@@ -107,10 +111,6 @@ async function approve(status, userId) {
           await trx("members").where("id", "=", userId).update({
             status: status,
           });
-          
-          const output = await trx('dividends').where("member_id", "=", member_id).select('id')
-          
-          if(output[0]) throw new Error('Dividend account already exist for this member')
 
           await trx("dividends").insert({id: dividendId, member_id: userId, amount: 0.00})
         });
