@@ -14,7 +14,7 @@ async function createTable() {
               table.string('member_id')
               table.foreign('member_id').references('id').inTable('members')
               table.float("amount");
-              table.timestamps("created_at", { precision: 6 });
+              table.timestamp("created_at", { precision: 6 }).defaultTo(knex.fn.now(6));
             });
         }
         create()
