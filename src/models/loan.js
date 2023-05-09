@@ -65,15 +65,28 @@ async function applyLoan(loan) {
 async function approveLoan(loanId, status) {
   const output = await knex("loans")
     .where({ id: loanId })
-    .select("id", "status");
+    .select("id", "status", "amount", 'member_id');
 
   if (!output[0]) throw new Error("No loan with the given Id");
 
-  const loan = await knex("loans").where("id", "=", loanId).update({
-    status: status,
-  });
+  try{
 
-  return loan;
+    
+      const loan = await knex("loans").where("id", "=", loanId).update({
+        status: status,
+      });
+    
+      const member = await knex("members").where({id: output[0].member_id}).increment({
+        available_amount: output[0].amount,
+      })
+
+      return loan;
+      
+  }catch(err){
+    throw new Error(err)
+  }
+
+  
 }
 
 async function getAllLoan() {

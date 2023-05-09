@@ -20,6 +20,7 @@ async function createTable() {
               table.float("balance");
               table.integer("transaction_code");
               table.enu("payment_type", ["deposit", "transfer", "cheque", "withdraw"]);
+              table.string('bank')
               table.enu("status", ["confirmed", "rejected", "pending"]);
               table.datetime("date", { precision: 6 }).defaultTo(knex.fn.now(6))
             });
@@ -43,7 +44,7 @@ async function getContributionWithdraw(member_id) {
   
   const output = await knex('transactions')
       .where({ member_id: member_id, payment_type: 'withdraw'})
-      .select('id','amount', 'balance', 'transaction_code', 'payment_type', 'status', 'date')
+      .select('id','amount', 'balance', 'transaction_code', 'payment_type', 'status', 'date', 'bank')
   
   if (!output[0]) throw new Error('You have no transaction attach to this contribution')
 
@@ -54,7 +55,7 @@ async function getContributionTransact(member_id) {
   
   const output = await knex('transactions')
       .where({ member_id: member_id})
-      .select('id', 'amount', 'balance', 'transaction_code', 'payment_type', 'status', 'date')
+      .select('id', 'amount', 'balance', 'transaction_code', 'payment_type', 'status', 'date', 'bank')
   
   if (!output[0]) throw new Error('You have no transaction attach to this contribution')
 
@@ -71,7 +72,7 @@ async function getAllTransaction() {
         '=', 
         'members.id'
       )
-      .select('transactions.id', 'transactions.amount', 'transactions.balance', 'transactions.transaction_code', 'transactions.payment_type', 'transactions.status', 'transactions.date', 'members.firstname', 'members.lastname')
+      .select('transactions.id', 'transactions.amount', 'transactions.balance', 'transactions.bank', 'transactions.transaction_code', 'transactions.payment_type', 'transactions.status', 'transactions.date', 'members.firstname', 'members.lastname')
       
   
   if (!output[0]) throw new Error('No transaction for this contribution')
@@ -89,7 +90,7 @@ async function getAllWithdraw() {
         '=', 
         'members.id'
       )
-      .select('transactions.id', 'transactions.amount', 'transactions.balance', 'transactions.transaction_code', 'transactions.payment_type', 'transactions.status', 'transactions.date', 'members.firstname', 'members.lastname')
+      .select('transactions.id', 'transactions.amount', 'transactions.balance', 'transactions.bank', 'transactions.transaction_code', 'transactions.payment_type', 'transactions.status', 'transactions.date', 'members.firstname', 'members.lastname')
       
   
   if (!output[0]) throw new Error('No transaction for this contribution')

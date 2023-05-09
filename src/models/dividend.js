@@ -25,4 +25,14 @@ async function createTable() {
   }
 }
 
-module.exports = { createTable };
+async function getAllDividend() {
+  
+  const output = await knex('dividends')
+      .select('id','member_id', 'amount')
+  
+  if (!output[0]) throw new Error('No Dividend in the database')
+
+  return output
+}
+
+module.exports = { createTable, getAllDividend };
