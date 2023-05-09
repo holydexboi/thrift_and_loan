@@ -142,7 +142,7 @@ async function approve(status, userId) {
     .where("member_id", "=", userId)
     .select("id");
 
-  if (dividend[0]) {
+  if (!dividend[0]) {
     const dividendId = v4();
     try {
       await knex.transaction(async (trx) => {
